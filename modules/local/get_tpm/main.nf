@@ -8,8 +8,7 @@ process GET_TPM {
         path gene_annotations                                    // one gene annotations file (gtf)
 
     output:
-        path "*.tpm.tsv"
-
+        path "${sample_id}.tpm.tsv"
 
     script:
     """

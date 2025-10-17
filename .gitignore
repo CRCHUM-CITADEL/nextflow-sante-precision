@@ -1,6 +1,7 @@
 .nextflow*
 .nf-test
 .nf-test.log
+
 work/
 data/
 results/
@@ -11,4 +12,7 @@ testing*
 null/
 containers/*.sif
 output/
+
 assets/test_data/vcf/*.final.*
+assets/test_data/vep/*
+assets/vep/*

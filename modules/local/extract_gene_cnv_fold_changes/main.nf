@@ -10,7 +10,7 @@ process EXTRACT_GENE_CNV_FOLD_CHANGES {
       path gene_annotations                             // one gene annotations file
 
     output:
-      path "*.genes.cnv.tsv"
+      path "${sample_id}.genes.cnv.tsv"
 
 
     script:

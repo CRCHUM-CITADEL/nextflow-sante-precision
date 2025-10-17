@@ -33,14 +33,14 @@
             },
             "sequence_data": {
                 "type": "string",
-                "errorMessage": "sequence_data must be provided and be one of 'dna', 'rna'",
-                "enum": ["dna", "rna"],
+                "errorMessage": "sequence_data must be provided and be one of 'dna', 'germinal_dna', 'rna'",
+                "enum": ["germinal_dna", "dna", "rna"],
                 "meta": "sequence"
             },
             "filetype": {
                 "type": "string",
                 "errorMessage": "filetype must be provided and be one of 'vcf.gz'",
-                "enum": ["cnv", "sv", "expression"],
+                "enum": ["cnv", "sv", "expression", "hard_filtered"],
                 "meta": "pipeline"
             },
             "info": {

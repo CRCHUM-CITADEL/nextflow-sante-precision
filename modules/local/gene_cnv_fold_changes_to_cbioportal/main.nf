@@ -1,4 +1,5 @@
 process GENE_CNV_FOLD_CHANGES_TO_CBIOPORTAL {
+    publishDir "${params.outdir}/${sample_id}", mode: 'copy'
 
     // use sample_id for logging
     tag { sample_id }
@@ -10,7 +11,7 @@ process GENE_CNV_FOLD_CHANGES_TO_CBIOPORTAL {
     path fold_changes_per_gene_cnv
 
     output:
-    path "*_data_cna_hg38.seg"
+    path "${sample_id}_data_cna_hg38.seg"
 
     script:
     """

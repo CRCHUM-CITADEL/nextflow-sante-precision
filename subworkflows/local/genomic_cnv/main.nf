@@ -13,13 +13,15 @@ workflow GENOMIC_CNV {
             ensembl_annotations
             )
 
-        cbioportal_genomic_cnv = GENE_CNV_FOLD_CHANGES_TO_CBIOPORTAL(
+        cbioportal_genomic_cnv_files = GENE_CNV_FOLD_CHANGES_TO_CBIOPORTAL(
             cnv_vcf,
             fold_change_per_gene_cnv
             )
 
+        cbioportal_genomic_cnv_merged = cbioportal_genomic_cnv_files.collectFile( name : 'data_cna_hg38.seg', storeDir: "${params.outdir}", keepHeader : true, skip: 1)
+
 
     emit:
-        cbioportal_genomic_cnv
+        cbioportal_genomic_cnv_merged
 
 }

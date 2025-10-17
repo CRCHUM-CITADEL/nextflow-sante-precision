@@ -17,66 +17,6 @@ include { GENOMIC   } from './workflows/genomic.nf'
 include { CLINICAL  } from './workflows/clinical.nf'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils'
-// include { getGenomeAttribute      } from './subworkflows/local/utils'
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    GENOME PARAMETER VALUES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-// TODO nf-core: Remove this line if you don't need a FASTA file
-//   This is an example of how to use getGenomeAttribute() to fetch parameters
-//   from igenomes.config using `--genome`
-// params.fasta = getGenomeAttribute('fasta')
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    NAMED WORKFLOWS FOR PIPELINE
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-//
-// WORKFLOWS : Run main pipeline.
-//
-
-// workflow NFCORE_CITADEL_TEST {
-//     take:
-//     samplesheet
-
-//     main:
-
-//     TEST (
-//         samplesheet
-//     )
-
-// }
-
-workflow CLINICAL_PIPELINE {
-    take:
-    ch_samplesheet
-
-    main:
-
-    CLINICAL (
-        ch_samplesheet
-    )
-
-}
-
-// workflow GENOMIC_PIPELINE {
-//     take:
-//     samplesheet_list
-
-//     main:
-
-//     GENOMIC (
-//         samplesheet_list,
-//         params.ensembl_annotations,
-//         params.gencode_annotations
-//     )
-
-// }
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -107,16 +47,26 @@ workflow {
     //     PIPELINE_INITIALISATION.out.samplesheet
     // )
     if (params.mode == 'genomic'){
-        // GENOMIC_PIPELINE(PIPELINE_INITIALISATION.out.samplesheet)
+
+        ch_vep_cache = params.vep_cache && params.vep_cache != ''
+            ? Channel.fromPath(params.vep_cache, type: 'dir', checkIfExists: true)
+            : Channel.empty()
+
+        ch_pcgr_data = params.pcgr_data && params.pcgr_data != ''
+            ? Channel.fromPath(params.pcgr_data, type: 'dir', checkIfExists: true)
+            : Channel.empty()
+
         GENOMIC (
             PIPELINE_INITIALISATION.out.samplesheet,
             params.ensembl_annotations,
-            params.gencode_annotations
+            params.gencode_annotations,
+            ch_vep_cache,
+            params.genome_reference,
+            ch_pcgr_data
         )
     }
     else if (params.mode == 'clinical'){
         CLINICAL_PIPELINE(PIPELINE_INITIALISATION.out.samplesheet)
-
     }
 
 

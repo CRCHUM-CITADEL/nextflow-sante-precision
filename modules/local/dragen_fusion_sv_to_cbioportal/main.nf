@@ -1,4 +1,7 @@
 process DRAGEN_FUSION_SV_TO_CBIOPORTAL {
+    publishDir "${params.outdir}/${sample_id}", mode: 'copy'
+
+
     tag { sample_id }
 
     container params.container_r
@@ -7,7 +10,7 @@ process DRAGEN_FUSION_SV_TO_CBIOPORTAL {
         tuple val(sample_id), path(dragen_fusion)
 
     output:
-        path "*.data_sv.txt"
+        path "${sample_id}.data_sv.txt"
 
     script:
     """

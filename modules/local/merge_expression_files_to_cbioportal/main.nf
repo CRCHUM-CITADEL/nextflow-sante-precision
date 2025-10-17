@@ -1,4 +1,5 @@
 process MERGE_EXPRESSION_FILES_TO_CBIOPORTAL {
+    publishDir "${params.outdir}", mode: 'copy'
 
     container params.container_r
 
